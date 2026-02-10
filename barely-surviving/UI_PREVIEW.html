@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barely Surviving - UI Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pine: #1B4D3E;
+            --sage: #5B8A72;
+            --moss: #81A684;
+            --cream: #FBF9F1;
+            --sand: #F3EED9;
+            --clay: #C8B8A6;
+            --ink: #2A2A2A;
+            --glow: #FFE8A3;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 430px;
+            margin: 0 auto;
+            padding: 20px 18px 100px;
+        }
+
+        /* Header */
+        .header {
+            padding: 8px 0 28px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .date-badge {
+            background: white;
+            padding: 10px 18px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .day-name {
+            font-size: 13px;
+            color: var(--sage);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .full-date {
+            font-size: 11px;
+            color: var(--clay);
+            margin-top: 2px;
+        }
+
+        .streak-badge {
+            background: linear-gradient(135deg, var(--pine), var(--sage));
+            padding: 10px 18px;
+            border-radius: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(27, 77, 62, 0.2);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(27, 77, 62, 0.2); }
+            50% { box-shadow: 0 4px 20px rgba(27, 77, 62, 0.35); }
+        }
+
+        .streak-flame {
+            font-size: 18px;
+        }
+
+        .streak-number {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .welcome {
+            font-family: 'Lora', serif;
+            font-size: 32px;
+            color: var(--pine);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .motivational {
+            color: var(--sage);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Achievement Cards */
+        .achievements {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+            animation: slideUp 0.6s ease-out 0.1s both;
+        }
+
+        .achievements::-webkit-scrollbar {
+            display: none;
+        }
+
+        .achievement-card {
+            min-width: 140px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px 18px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--pine), var(--moss));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .achievement-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .achievement-card:nth-child(2) .achievement-icon { animation-delay: 0.3s; }
+        .achievement-card:nth-child(3) .achievement-icon { animation-delay: 0.6s; }
+
+        .achievement-value {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--pine);
+            margin-bottom: 4px;
+        }
+
+        .achievement-label {
+            font-size: 12px;
+            color: var(--sage);
+            font-weight: 500;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            margin-bottom: 24px;
+            animation: slideUp 0.6s ease-out 0.2s both;
+        }
+
+        .section-header {
+            font-family: 'Lora', serif;
+            font-size: 22px;
+            color: var(--pine);
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 24px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 22px;
+            padding: 24px 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .action-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, var(--sand) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .action-card:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        .action-card:active {
+            transform: scale(0.96);
+        }
+
+        .action-emoji {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover .action-emoji {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .action-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--pine);
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .action-subtitle {
+            font-size: 12px;
+            color: var(--sage);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Stats Grid */
+        .stats-section {
+            margin-bottom: 24px;
+            animation: slideUp 0.6s ease-out 0.3s both;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 2px solid var(--sand);
+            border-radius: 20px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(45, 80, 22, 0.08);
+            border-color: var(--moss);
+        }
+
+        .stat-value {
+            font-family: 'Lora', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--pine);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--sage);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            margin-top: 6px;
+            color: var(--moss);
+            font-weight: 500;
+        }
+
+        /* Activity Timeline */
+        .activity-timeline {
+            animation: slideUp 0.6s ease-out 0.4s both;
+        }
+
+        .timeline-item {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--pine), var(--moss));
+            border-radius: 20px 0 0 20px;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .timeline-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--sand);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--pine);
+            margin-bottom: 4px;
+        }
+
+        .timeline-details {
+            font-size: 13px;
+            color: var(--sage);
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: var(--clay);
+            font-weight: 500;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--sand);
+            padding: 12px 20px 24px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+            animation: slideUp 0.6s ease-out 0.5s both;
+        }
+
+        .nav-container {
+            max-width: 430px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--pine);
+            border-radius: 3px 3px 0 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active::after {
+            width: 32px;
+        }
+
+        .nav-item:hover {
+            background: var(--sand);
+        }
+
+        .nav-emoji {
+            font-size: 24px;
+            opacity: 0.4;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active .nav-emoji {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            color: var(--sage);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-item.active .nav-label {
+            color: var(--pine);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* App Label */
+        .app-label {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--pine);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+            z-index: 1000;
+            animation: fadeIn 1s ease-out 1s both;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-label">Barely Surviving</div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-top">
+                <div class="date-badge">
+                    <div class="day-name">MONDAY</div>
+                    <div class="full-date">February 9, 2026</div>
+                </div>
+                <div class="streak-badge">
+                    <span class="streak-flame">🔥</span>
+                    <span class="streak-number">7 Days</span>
+                </div>
+            </div>
+            <h1 class="welcome">Keep it going!</h1>
+            <p class="motivational">You're building healthy habits, one day at a time.</p>
+        </div>
+
+        <!-- Achievement Cards -->
+        <div class="achievements">
+            <div class="achievement-card">
+                <div class="achievement-icon">🌱</div>
+                <div class="achievement-value">Week 1</div>
+                <div class="achievement-label">Completed</div>
+            </div>
+            <div class="achievement-card">
+                <div class="achievement-icon">🎯</div>
+                <div class="achievement-value">75%</div>
+                <div class="achievement-label">To Goal</div>
+            </div>
+            <div class="achievement-card">
+                <div class="achievement-icon">⚡</div>
+                <div class="achievement-value">Active</div>
+                <div class="achievement-label">Lifestyle</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h2 class="section-header">
+                <span class="section-icon">✨</span>
+                <span>Log Today</span>
+            </h2>
+            <div class="action-grid">
+                <div class="action-card">
+                    <div class="action-emoji">🏃</div>
+                    <div class="action-title">Workout</div>
+                    <div class="action-subtitle">Track activity</div>
+                </div>
+                <div class="action-card">
+                    <div class="action-emoji">🍽️</div>
+                    <div class="action-title">Meal</div>
+                    <div class="action-subtitle">Log nutrition</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Stats -->
+        <div class="stats-section">
+            <h2 class="section-header">
+                <span class="section-icon">📊</span>
+                <span>Today</span>
+            </h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">1,850</div>
+                    <div class="stat-label">Calories</div>
+                    <div class="stat-trend">↓ 150</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Workouts</div>
+                    <div class="stat-trend">🔥</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">167.5</div>
+                    <div class="stat-label">Weight</div>
+                    <div class="stat-trend">↓ 2.3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-timeline">
+            <h2 class="section-header">
+                <span class="section-icon">📝</span>
+                <span>Recent</span>
+            </h2>
+            <div class="timeline-item">
+                <div class="timeline-icon">🏃</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Morning Run</div>
+                    <div class="timeline-details">30 min • 245 calories burned</div>
+                </div>
+                <div class="timeline-time">2h ago</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon">🥗</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Healthy Lunch</div>
+                    <div class="timeline-details">450 cal • 35g protein</div>
+                </div>
+                <div class="timeline-time">4h ago</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon">⚖️</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Weight Check</div>
+                    <div class="timeline-details">167.5 lbs</div>
+                </div>
+                <div class="timeline-time">Morning</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <div class="nav-item active">
+                <div class="nav-emoji">🏡</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-emoji">💪</div>
+                <div class="nav-label">Workouts</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-emoji">🥗</div>
+                <div class="nav-label">Nutrition</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-emoji">📊</div>
+                <div class="nav-label">Stats</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-emoji">🎯</div>
+                <div class="nav-label">Goals</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

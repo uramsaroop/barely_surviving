@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: barely-surviving-dev
+  labels:
+    name: barely-surviving-dev
+    environment: development
